@@ -12,14 +12,14 @@ import org.springframework.stereotype.Component;
 
 @Route
 @Component
-@PageTitle("Cipher translator")
+@PageTitle("Transaction provider")
 @PreserveOnRefresh
 public class MainView extends VerticalLayout {
 
     private final TransactionProviderService providerService;
 
     public MainView(TransactionProviderService providerService) {
-        H1 heading = new H1("Cipher translator");
+        H1 heading = new H1("Transaction provider");
 
         TextArea sourceArea = new TextArea();
         sourceArea.setValueChangeMode(ValueChangeMode.EAGER);

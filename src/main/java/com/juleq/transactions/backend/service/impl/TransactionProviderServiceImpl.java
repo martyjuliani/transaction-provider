@@ -3,6 +3,8 @@ package com.juleq.transactions.backend.service.impl;
 import com.juleq.transactions.backend.service.TransactionProviderService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TransactionProviderServiceImpl implements TransactionProviderService {
 
@@ -14,7 +16,7 @@ public class TransactionProviderServiceImpl implements TransactionProviderServic
      * @return the string representing the list of transactions and order for given partner
      */
     @Override
-    public String solution(String location) {
+    public List<String> getTransactions(String location) {
         return null;
     }
 }

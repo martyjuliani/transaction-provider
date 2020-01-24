@@ -12,7 +12,7 @@
     <artifactId>transaction-provider</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>transaction-provider</name>
-    <description>Lightweight web application for storing transactions from providers.</description>
+    <description>Lightweight web application for storing transactions from several providers.</description>
 
     <properties>
         <java.version>11</java.version>
