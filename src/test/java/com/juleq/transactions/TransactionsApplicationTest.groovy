@@ -1,18 +1,18 @@
 package com.juleq.transactions;
 
-import com.juleq.transactions.backend.controller.TransactionProviderController;
+import com.juleq.transactions.backend.controller.TransactionsController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import spock.lang.Specification;
 
 @SpringBootTest
-class TransactionProviderApplicationTest extends Specification {
+class TransactionsApplicationTest extends Specification {
 
     @Autowired (required = false)
-    private TransactionProviderController controller
+    private TransactionsController controller
 
     def "when context is loaded then all expected beans are created"() {
-        expect: "the CipherTranslatorController is created"
+        expect: "the TransactionsController is created"
         controller
     }
 }

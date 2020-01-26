@@ -6,9 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication()
 @EnableVaadin
-public class TransactionProviderApplication {
+public class TransactionsApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TransactionProviderApplication.class, args);
+        SpringApplication.run(TransactionsApplication.class, args);
     }
 }

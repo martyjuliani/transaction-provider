@@ -1,6 +1,6 @@
 package com.juleq.transactions.frontend;
 
-import com.juleq.transactions.backend.service.TransactionProviderService;
+import com.juleq.transactions.backend.service.TransactionsService;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -16,9 +16,9 @@ import org.springframework.stereotype.Component;
 @PreserveOnRefresh
 public class MainView extends VerticalLayout {
 
-    private final TransactionProviderService providerService;
+    private final TransactionsService providerService;
 
-    public MainView(TransactionProviderService providerService) {
+    public MainView(TransactionsService providerService) {
         H1 heading = new H1("Transaction provider");
 
         TextArea sourceArea = new TextArea();
