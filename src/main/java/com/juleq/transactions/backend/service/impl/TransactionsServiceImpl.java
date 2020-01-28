@@ -28,17 +28,16 @@ public class TransactionsServiceImpl implements TransactionsService {
     }
 
     /**
-     * Reads the file from location which contains the list of M transactions location and saves them to the database.
-     * The order of lines will stay the same.
+     * Reads transactions from the text, line by line, and saves them to the H2 database.
      *
-     * @param location the location of input file with transaction
+     * @param transactions the string of transaction separated in each line
      */
     @Override
-    public void saveTransactions(String location) {
-        try (Stream<String> lines = Files.lines(Paths.get(location))) {
+    public void saveTransactions(String transactions) {
+        try (Stream<String> lines = Files.lines(Paths.get(transactions))) {
             lines.forEach(this::saveTransaction);
         } catch (IOException e) {
-            throw new IllegalArgumentException("Not possible to read input file from location '" + location + "'.");
+            throw new IllegalArgumentException("Not possible to read input file from location '" + transactions + "'.");
         }
     }
 
@@ -47,9 +46,16 @@ public class TransactionsServiceImpl implements TransactionsService {
         return repository.findAll();
     }
 
+    /**
+     * Gets order id of the transaction uniquely defined by partner name and date time of transaction.
+     *
+     * @param partner the name of partner
+     * @param dateTime the date time when transaction was performed
+     * @return the order id of the transaction
+     */
     @Override
     public String getOrderId(String partner, LocalDateTime dateTime) {
-        List<Transaction> transactions = repository.getOrderedPartnerTransactions(partner);
+        List<Transaction> transactions = repository.getSortedPartnerTransactions(partner);
         int paddingSize = String.valueOf(transactions.size()).length();
 
         for (int i = 0; i < transactions.size(); i++) {
@@ -65,13 +71,13 @@ public class TransactionsServiceImpl implements TransactionsService {
         repository.deleteAll();
     }
 
-    public void saveTransaction(String line) {
-        Transaction transaction = parseTransaction(line);
-        repository.save(transaction);
+    public void saveTransaction(String transaction) {
+        Transaction entity = parseTransaction(transaction);
+        repository.save(entity);
     }
 
-    private Transaction parseTransaction(String line) {
-        CodePointCharStream input = CharStreams.fromString(line);
+    private Transaction parseTransaction(String transaction) {
+        CodePointCharStream input = CharStreams.fromString(transaction);
         TransactionsLexer lexer = new TransactionsLexer(input);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         TransactionsParser parser = new TransactionsParser(tokenStream);

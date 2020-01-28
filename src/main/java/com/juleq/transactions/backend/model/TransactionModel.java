@@ -2,12 +2,12 @@ package com.juleq.transactions.backend.model;
 
 public class TransactionModel {
     public String partner;
-    public String order;
+    public String orderId;
     public String name;
 
-    public TransactionModel(String partner, String order, String name) {
+    public TransactionModel(String partner, String orderId, String name) {
         this.partner = partner;
-        this.order = order;
+        this.orderId = orderId;
         this.name = name;
     }
 }

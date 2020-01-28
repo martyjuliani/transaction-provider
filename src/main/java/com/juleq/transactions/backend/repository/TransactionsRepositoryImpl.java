@@ -18,8 +18,14 @@ public class TransactionsRepositoryImpl implements TransactionsRepositoryCustom 
         this.em = em;
     }
 
+    /**
+     * Gets sorted partner's transactions according to date time.
+     *
+     * @param partner the name of partner
+     * @return the list of sorted transaction for the partner
+     */
     @Override
-    public List<Transaction> getOrderedPartnerTransactions(String partner) {
+    public List<Transaction> getSortedPartnerTransactions(String partner) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Transaction> cq = cb.createQuery(Transaction.class);
         Root<Transaction> root = cq.from(Transaction.class);

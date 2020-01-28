@@ -25,15 +25,15 @@ public class TransactionsController {
      * REST API for retrieve all transactions in specified format.
      * Example: GET http://localhost:8080/transactions with request body with transactions
      *
-     * param location the location of input file
+     * param transactions the string with transactions in each line
      * @return the list of all translations with Http status 200 OK or 500 in case of any error
      */
     @GetMapping(produces = {MediaType.TEXT_PLAIN_VALUE}, consumes = {MediaType.TEXT_PLAIN_VALUE})
-    public @ResponseBody ResponseEntity<TransactionsModel> getTransactions(@RequestBody String transaction) {
-        transactionsService.saveTransactions(transaction);
-        TransactionsModel transactions = toModel(transactionsService.getTransactions());
+    public @ResponseBody ResponseEntity<TransactionsModel> getTransactions(@RequestBody String transactions) {
+        transactionsService.saveTransactions(transactions);
+        TransactionsModel model = toModel(transactionsService.getTransactions());
         transactionsService.deleteAll();
-        return ResponseEntity.ok(transactions);
+        return ResponseEntity.ok(model);
     }
 
     private TransactionsModel toModel(Iterable<Transaction> transactions) {

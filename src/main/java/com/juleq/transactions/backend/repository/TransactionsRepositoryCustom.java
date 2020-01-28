@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface TransactionsRepositoryCustom {
 
-    List<Transaction> getOrderedPartnerTransactions(String partner);
+    List<Transaction> getSortedPartnerTransactions(String partner);
 }

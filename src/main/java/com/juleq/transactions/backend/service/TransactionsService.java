@@ -6,9 +6,9 @@ import java.time.LocalDateTime;
 
 public interface TransactionsService {
 
-    void saveTransactions(String location);
+    void saveTransactions(String transactions);
 
-    void saveTransaction(String line);
+    void saveTransaction(String transaction);
 
     Iterable<Transaction> getTransactions();
 
