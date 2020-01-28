@@ -2,11 +2,17 @@ package com.juleq.transactions.backend.service;
 
 import com.juleq.transactions.backend.entity.Transaction;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 public interface TransactionsService {
 
     void saveTransactions(String location);
 
-    List<Transaction> getTransactions();
+    void saveTransaction(String line);
+
+    Iterable<Transaction> getTransactions();
+
+    String getOrderId(String partner, LocalDateTime dateTime);
+
+    void deleteAll();
 }

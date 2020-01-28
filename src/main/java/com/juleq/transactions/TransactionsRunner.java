@@ -1,22 +1,19 @@
 package com.juleq.transactions;
 
-import com.juleq.transactions.backend.converter.TransactionsConverter;
+import com.juleq.transactions.backend.entity.Transaction;
 import com.juleq.transactions.backend.service.TransactionsService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import static java.lang.String.format;
 
 @Component
 public class TransactionsRunner implements CommandLineRunner {
 
-    private static final Logger logger = LogManager.getLogger(TransactionsRunner.class);
     private final TransactionsService transactionsService;
-    private final TransactionsConverter converter;
 
-    public TransactionsRunner(TransactionsService transactionsService, TransactionsConverter converter) {
+    public TransactionsRunner(TransactionsService transactionsService) {
         this.transactionsService = transactionsService;
-        this.converter = converter;
     }
 
     @Override
@@ -25,7 +22,14 @@ public class TransactionsRunner implements CommandLineRunner {
             throw new IllegalArgumentException("Incorrect input entered.");
         }
         transactionsService.saveTransactions(args[0]);
-        String transactions = converter.toString(transactionsService.getTransactions());
-        System.out.println(transactions);
+        toString(transactionsService.getTransactions());
+        transactionsService.deleteAll();
+    }
+
+    private void toString(Iterable<Transaction> transactions) {
+        for (Transaction t : transactions) {
+            String orderId = transactionsService.getOrderId(t.getPartner(), t.getDateTime());
+            System.out.println(format("%s|%s|%s", t.getPartner(), orderId, t.getName()));
+        }
     }
 }

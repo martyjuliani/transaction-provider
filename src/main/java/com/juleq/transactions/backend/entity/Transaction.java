@@ -13,9 +13,6 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String order;
-
     @Length(max = 200)
     @Column(nullable = false)
     private String name;
@@ -24,6 +21,7 @@ public class Transaction {
     @Column(nullable = false)
     private String partner;
 
+    @Length(max = 15)
     @Column(nullable = false)
     private String phone;
 
@@ -36,14 +34,6 @@ public class Transaction {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getOrder() {
-        return order;
-    }
-
-    public void setOrder(String order) {
-        this.order = order;
     }
 
     public String getName() {
@@ -82,7 +72,6 @@ public class Transaction {
     public String toString() {
         return "Transaction{" +
                 "id=" + id +
-                ", order=" + order +
                 ", name='" + name + '\'' +
                 ", partner='" + partner + '\'' +
                 ", phone=" + phone +

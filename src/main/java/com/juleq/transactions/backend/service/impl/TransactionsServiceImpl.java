@@ -9,24 +9,22 @@ import com.juleq.transactions.backend.service.TransactionsService;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
 @Service
 public class TransactionsServiceImpl implements TransactionsService {
 
-    private static final Logger logger = LogManager.getLogger(TransactionsServiceImpl.class);
-    private final TransactionsRepository transactionsRepository;
+    private final TransactionsRepository repository;
 
-    public TransactionsServiceImpl(TransactionsRepository transactionsRepository) {
-        this.transactionsRepository = transactionsRepository;
+    public TransactionsServiceImpl(TransactionsRepository repository) {
+        this.repository = repository;
     }
 
     /**
@@ -40,19 +38,36 @@ public class TransactionsServiceImpl implements TransactionsService {
         try (Stream<String> lines = Files.lines(Paths.get(location))) {
             lines.forEach(this::saveTransaction);
         } catch (IOException e) {
-            logger.error("Not possible to read input file from location '" + location + "'.");
-            throw new IllegalArgumentException("Invalid input file location.");
+            throw new IllegalArgumentException("Not possible to read input file from location '" + location + "'.");
         }
     }
 
     @Override
-    public List<Transaction> getTransactions() {
-        return null;
+    public Iterable<Transaction> getTransactions() {
+        return repository.findAll();
     }
 
-    private void saveTransaction(String line) {
+    @Override
+    public String getOrderId(String partner, LocalDateTime dateTime) {
+        List<Transaction> transactions = repository.getOrderedPartnerTransactions(partner);
+        int paddingSize = String.valueOf(transactions.size()).length();
+
+        for (int i = 0; i < transactions.size(); i++) {
+            if (transactions.get(i).getDateTime().equals(dateTime)) {
+                return String.format("%0" + paddingSize + "d", i + 1);
+            }
+        }
+        throw new IllegalStateException("Not existing transaction for partner.");
+    }
+
+    @Override
+    public void deleteAll() {
+        repository.deleteAll();
+    }
+
+    public void saveTransaction(String line) {
         Transaction transaction = parseTransaction(line);
-        transactionsRepository.save(transaction);
+        repository.save(transaction);
     }
 
     private Transaction parseTransaction(String line) {
