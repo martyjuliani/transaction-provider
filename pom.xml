@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.juleq</groupId>
     <artifactId>transaction-provider</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>transaction-provider</name>
     <description>Lightweight web application for storing transactions from several providers.</description>
 

@@ -25,7 +25,7 @@ public class TransactionsController {
      * REST API for retrieve all transactions in specified format.
      * Example: GET http://localhost:8080/transactions with request body with transactions
      *
-     * param transactions the string with transactions in each line
+     * param transactions the string with transactions, the each one is placed in the new line
      * @return the list of all translations with Http status 200 OK or 500 in case of any error
      */
     @GetMapping(produces = {MediaType.TEXT_PLAIN_VALUE}, consumes = {MediaType.TEXT_PLAIN_VALUE})

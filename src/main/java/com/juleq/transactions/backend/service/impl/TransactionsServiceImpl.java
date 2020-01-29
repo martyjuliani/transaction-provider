@@ -28,19 +28,38 @@ public class TransactionsServiceImpl implements TransactionsService {
     }
 
     /**
+     * Reads transactions from the file line by line, and saves them to the H2 database.
+     *
+     * @param location the string of transaction separated in each line
+     */
+    @Override
+    public void saveTransactions(String location) {
+        try (Stream<String> lines = Files.lines(Paths.get(location))) {
+            lines.forEach(this::saveTransaction);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Not possible to read input file from location '" + location + "'.");
+        }
+    }
+
+    /**
      * Reads transactions from the text, line by line, and saves them to the H2 database.
      *
      * @param transactions the string of transaction separated in each line
      */
     @Override
-    public void saveTransactions(String transactions) {
-        try (Stream<String> lines = Files.lines(Paths.get(transactions))) {
-            lines.forEach(this::saveTransaction);
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Not possible to read input file from location '" + transactions + "'.");
+    public void saveTransaction(String transactions) {
+        String[] lines = transactions.split("\\r?\\n");
+        for (String line: lines) {
+            Transaction entity = parseTransaction(line);
+            repository.save(entity);
         }
     }
 
+    /**
+     * Gets all transactions from the H2 database.
+     *
+     * @return the transactions in the specific format
+     */
     @Override
     public Iterable<Transaction> getTransactions() {
         return repository.findAll();
@@ -66,14 +85,13 @@ public class TransactionsServiceImpl implements TransactionsService {
         throw new IllegalStateException("Not existing transaction for partner.");
     }
 
+    /**
+     * Deletes all transaction from H2 database. It is due to simultaneous run from web and command line, we need to
+     * work just one set of transactions.
+     */
     @Override
     public void deleteAll() {
         repository.deleteAll();
-    }
-
-    public void saveTransaction(String transaction) {
-        Transaction entity = parseTransaction(transaction);
-        repository.save(entity);
     }
 
     private Transaction parseTransaction(String transaction) {
