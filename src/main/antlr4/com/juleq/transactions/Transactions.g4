@@ -1,18 +1,28 @@
 /* simple grammar for parsing transaction from input file with ASS output */
 grammar Transactions;
 
-/* parser rules, set of supported operations */
+/* parser rules */
 start
-    : name=literal COMMA partner=ID SLASH phone=NUMBER COMMA date=DATE time=TIME EOF
+    : name=text COMMA WS* partner=id WS* SLASH WS* phone=number WS* COMMA WS* date=DATE WS* time=TIME EOF
+    ;
+
+text
+    : literal
+    | (LETTER|DIGIT|DOT|WS)+
     ;
 
 literal
-    : '"' (ID|COMMA|DOT)+ '"'
+    : '"' (LETTER|DIGIT|COMMA|DOT|WS)+ '"'
     ;
 
-/* lexer rules, atomic numbers */
-ID           : LETTER (LETTER|DIGIT|WHITESPACE)+ (LETTER|DIGIT);
-NUMBER       : DIGIT+;
+id  : (LETTER|DIGIT)+
+    ;
+
+number
+    : DIGIT+
+    ;
+
+/* lexer rules */
 DATE         : FOURDIGIT DASH TWODIGIT DASH TWODIGIT;
 TIME         : TWODIGIT COLON TWODIGIT COLON TWODIGIT;
 
@@ -21,15 +31,12 @@ DOT          : '.';
 COMMA        : ',';
 SLASH        : '/';
 QUOT         : '"';
-
-/* whitespaces */
-WS           : WHITESPACE+ -> skip;
+DIGIT        : [0-9];
+LETTER       : [A-Za-z];
+WS           : [ \r\n\t];
 
 /* fragments */
 fragment DASH       : '-';
 fragment COLON      : ':';
-fragment DIGIT      : [0-9];
-fragment LETTER     : [A-Za-z];
 fragment TWODIGIT   : DIGIT DIGIT;
 fragment FOURDIGIT  : DIGIT DIGIT DIGIT DIGIT;
-fragment WHITESPACE : [ \r\n\t];
